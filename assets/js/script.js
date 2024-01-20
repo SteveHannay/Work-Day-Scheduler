@@ -71,6 +71,50 @@ function init(){
 // Draw a Table of Timeblocks
 function drawTableOfTimeblocks() {
 
+    var tableContainer = $(".container")            // Container element - existing <div class="container"> element where table will be positioned
+    
+    var tableEl = $("<table>")                      // Table elemement - used to display the Work Day Scheduler
+    .addClass("table table-hover")
+    
+    var tableHeadEl= $("<thead>")                   // Table Head element - header section of table
+    var tableRowEl = $("<tr>")                      // Table Row element
+
+ 
+
+
+    // Create Table Headers
+
+    var tableHeaderCellEl_Timeblock = $("<th>")     // Table Header Cell elements
+    .addClass("p-2")
+    .text("Time")
+    .attr("scope", "col")
+
+    var tableHeaderCellEl_Event = $("<th>")
+    .addClass("p-2")
+    .text("Event")
+    .attr("scope", "col")
+
+    var tableHeaderCellEl_Save = $("<th>")
+    .addClass("p-2")
+    .text("Save")
+    .attr("scope", "col")
+
+    // - append Table Header Cells to Table Row
+    tableRowEl.append(tableHeaderCellEl_Timeblock, tableHeaderCellEl_Event, tableHeaderCellEl_Save)
+
+    // Create Table Rows
+
+
+    // - append Table Row to Table Head
+    tableHeadEl.append(tableRowEl)
+
+    // - append Table Header to Table
+    tableEl.append(tableHeadEl)
+
+    // - append Table to Webpage (at element <div class="container">)
+    tableContainer.append(tableEl)
+
+
 }
 
 
