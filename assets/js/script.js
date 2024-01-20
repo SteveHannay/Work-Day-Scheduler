@@ -24,9 +24,8 @@ var audioIncorrect = new Audio("./assets/sfx/incorrect.wav")
 var objEvents = {}               // object containing Events and their properties
 
 
-// // constants 
-// const lengthOfGameInSeconds = 60    // GAME SETTING - sets Game Length used by the Game Timer
-// const timePenaltyInSeconds = 10     // GAME SETTING - sets the Time Penalty applied to the Game Timer following an incorrect answer
+// constants 
+const timesblocksArr = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18]  // array of timeblocks (24 hour clock) - edit to change Scheduler
 
 
 // // Event Listeners 
@@ -76,13 +75,14 @@ function drawTableOfTimeblocks() {
     var tableEl = $("<table>")                      // Table elemement - used to display the Work Day Scheduler
     .addClass("table table-hover")
     
-    var tableHeadEl= $("<thead>")                   // Table Head element - header section of table
-    var tableRowEl = $("<tr>")                      // Table Row element
 
- 
 
 
     // Create Table Headers
+    // --------------------
+
+    var tableHeadEl= $("<thead>")                   // Table Head element - header section of table
+    var tableHeaderRowEl = $("<tr>")                // Table Head Row element
 
     var tableHeaderCellEl_Timeblock = $("<th>")     // Table Header Cell elements
     .addClass("p-2")
@@ -99,17 +99,53 @@ function drawTableOfTimeblocks() {
     .text("Save")
     .attr("scope", "col")
 
-    // - append Table Header Cells to Table Row
-    tableRowEl.append(tableHeaderCellEl_Timeblock, tableHeaderCellEl_Event, tableHeaderCellEl_Save)
+    // - append Table Header Cells to Table Header Row
+    tableHeaderRowEl.append(tableHeaderCellEl_Timeblock, tableHeaderCellEl_Event, tableHeaderCellEl_Save)
+
+    // - append Table Header Row to Table Head
+    tableHeadEl.append(tableHeaderRowEl)
+
+
 
     // Create Table Rows
+    // -----------------
+
+    var tableBodyEl= $("<tbody>")                   // Table Body element - body section of table
+
+    // Repeat for Each Timeblock (ie. a timeslot that begins at a specified time)
+    for (i = 0; i < timesblocksArr.length; i++) {
+
+        var tableBodyRowEl = $("<tr>")                // Table Body Row element
+
+        var tableBodyCellEl_Timeblock = $("<td>")     // Table Body Cell elements
+        .addClass("p-2")
+        .text(i)
+        .attr("scope", "row")
+    
+        var tableBodyCellEl_Event = $("<td>")
+        .addClass("p-2")
+        .text(i * 10)
+ 
+    
+        var tableBodyCellEl_Save = $("<td>")
+        .addClass("p-2")
+        .text(i * 100)
+ 
+ 
+
+        // - append Table Body Cells to Table Body Row
+        tableBodyRowEl.append(tableBodyCellEl_Timeblock, tableBodyCellEl_Event, tableBodyCellEl_Save)
+
+        // - append Table Row to Table Body
+        tableBodyEl.append(tableBodyRowEl)
 
 
-    // - append Table Row to Table Head
-    tableHeadEl.append(tableRowEl)
 
-    // - append Table Header to Table
-    tableEl.append(tableHeadEl)
+    }
+
+
+    // - append Table Header AND Body to Table
+    tableEl.append(tableHeadEl, tableBodyEl)
 
     // - append Table to Webpage (at element <div class="container">)
     tableContainer.append(tableEl)
