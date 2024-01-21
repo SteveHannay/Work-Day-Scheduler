@@ -35,6 +35,7 @@ $(".container").on('click', '.save-event-btn', function(event){
     // If a save event button has been clicked (a button with the class "save-event-button") Save Events for the related Timeblock
     var btnClicked = $(event.target)
     var selectedTimeblock = btnClicked.attr("data-timeblock")
+
     saveEvent(selectedTimeblock)
  
 });
@@ -72,10 +73,11 @@ function drawTableOfTimeblocks() {
     
     var tableEl = $("<table>")                      // Table elemement - used to display the Work Day Scheduler
     .addClass("table table-hover table-bordered custom-table")
-    .css("background-color", "Cornsilk")
     .css("width","100%")
     .css("margin-top", "50px")
-  
+    .css("background-color", "Cornsilk")
+
+
     // Create Table Headers
     // --------------------
 
@@ -84,7 +86,7 @@ function drawTableOfTimeblocks() {
     var tableHeaderRowEl = $("<tr>")                // Table Head Row element
 
     var tableHeaderCellEl_Timeblock = $("<th>")     // Table Header Cell elements
-    .addClass("p-2 text-center")
+    .addClass("p-2 time-block")
     .text("Time")
     .attr("scope", "col")
     .css("width","10%")
@@ -97,9 +99,12 @@ function drawTableOfTimeblocks() {
 
     var tableHeaderCellEl_Save = $("<th>")
     .addClass("p-2 text-center")
-    .text("Save")
+    .text("Changes")
     .attr("scope", "col")
     .css("width","10%")
+
+
+    // Create a Row and Append Row to Table Header
 
     // - append Table Header Cells to Table Header Row
     tableHeaderRowEl.append(tableHeaderCellEl_Timeblock, tableHeaderCellEl_Event, tableHeaderCellEl_Save)
@@ -109,8 +114,8 @@ function drawTableOfTimeblocks() {
 
 
 
-    // Create Table Rows for each Timeblock
-    // -----------------
+    // Create Table Rows for each Timeblock (Hour)
+    // -------------------------------------------
 
     var tableBodyEl= $("<tbody>")                       // Table Body element - body section of table
 
@@ -122,56 +127,51 @@ function drawTableOfTimeblocks() {
 
         // create elements
         var tableBodyRowEl = $("<tr>")                  // Table Body Row element
-         
 
         // (a) timeblock name                           // Table Body Cell elements
         var tableBodyCellEl_Timeblock = $("<td>")       
-        .addClass("p-2 text-center")
+        .addClass("p-2 time-block")
         .attr("scope", "row")
         .text(formatTimeblock(selectedTimeblock))       // formatTimeblock converts 24 hour clock values to 12 hour display values
     
-        // (b) event
-        var tableBodyCellEl_Event = $("<td>")
-        .addClass("p-2")
-
+        // (b) event description
         var textAreaEl = $("<textarea>")                   // use <textarea> for multi-line input
         .css("background-color", selectBackgroundColour(selectedTimeblock))  // set background according to the Timeblock time
         .css("height","50px")
         .css("width","100%")
         .text("Event " + i )
-
-        var inputDivEl = $("<div>")                     // append textarea to div AND div to Cell 
-
-        inputDivEl.append(textAreaEl)
-        tableBodyCellEl_Event.append(inputDivEl)
-
-
+        .attr("id", selectedTimeblock)                  // set the event descriptions id for later reference when saving changes
 
         // (c) save event utton
         var tableBodyCellEl_Save = $("<td>")
-        .addClass("p-2 text-center save-event-btn")
-        .text("X")
-        .attr("data-timeblock", selectedTimeblock)      // store selectedTimeblock with delete event button
-
+        .addClass("p-2 text-center")
  
+        var saveEventButtonEl = $("<button>")
+        .addClass("p-2 text-center save-event-btn saveBtn")
+        .attr("type", "button")
+        .attr("data-timeblock", selectedTimeblock)      // store selectedTimeblock with delete event button
+        .text("Save")
+ 
+        tableBodyCellEl_Save.append(saveEventButtonEl)
+
+
+        // Create a Row and Append Row to Table Body
 
         // - append Table Body Cells to Table Body Row
-        tableBodyRowEl.append(tableBodyCellEl_Timeblock, tableBodyCellEl_Event, tableBodyCellEl_Save)
+        tableBodyRowEl.append(tableBodyCellEl_Timeblock, textAreaEl, tableBodyCellEl_Save)
 
         // - append Table Row to Table Body
         tableBodyEl.append(tableBodyRowEl)
 
-
-
     }
 
+    // Final Appends
 
     // - append Table Header AND Body to Table
     tableEl.append(tableHeadEl, tableBodyEl)
 
     // - append Table to Webpage (at element <div class="container">)
     tableContainer.append(tableEl)
-
 
 }
 
@@ -192,10 +192,26 @@ function populateTableWithEvents() {
 function saveEvent(timeblock) {
 
     // Save Event to Local Storage
+    // ---------------------------
 
-    // Repopulate the Table with Events
+    // - get the Event description related to the clicked "save" button (note : each Event description has the ID of the related timeblock)
+    eventDescriptions = document.getElementById(timeblock).value
 
-    alert("Save EVENT Button click : " + timeblock)
+    // Update the Array of Events
+
+    // - remove any existing Event description for this timeslot from the Array of Events
+
+    // - add the selected Event to the Array of Events
+
+    // - save the Array of Events to Local Storage
+
+    
+
+    // Repopulate the html Table with Events (refresh screen)
+
+
+
+    alert("Save EVENT Button click : timeblock = " + timeblock + ", eventDesciption = " + eventDescriptions)
 
 }
 
@@ -238,6 +254,8 @@ function selectBackgroundColour(timeblock) {
     // Notes :
     // this function selects a background colour for an element according to its timeblock time in relation to the Current Hour
     // a timeblock is a 24 hour clock value in hours (eg. 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, etc.)
+    
+    // this functions sets customised colours, but the CSS file could have been employed to set colours instead 
 
     if (timeblock < currentHour_24format) {
         // past timeblock

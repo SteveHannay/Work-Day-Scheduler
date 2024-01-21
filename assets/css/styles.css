@@ -5,14 +5,6 @@ body {
   line-height: 1;
 }
 
-textarea {
-  background: transparent;
-  border: none;
-  resize: none;
-  color: #000000;
-  border-left: 1px solid black;
-  padding: 10px;
-}
 
 header {
   text-align: center;
@@ -23,9 +15,9 @@ header {
   padding: 60px;
 }
 
-.description {
-  white-space: pre-wrap;
-}
+
+
+/* TABLE */ 
 
 .time-block {
   text-align: center;
@@ -38,10 +30,27 @@ header {
   border-top: 1px solid white;
 }
 
+
+/* Hour */ 
 .hour {
   background-color: #ffffff;
   color: #000000;
   border-top: 1px dashed #000000;
+}
+
+
+/* Event Description */ 
+.description {
+  white-space: pre-wrap;
+}
+
+textarea {
+  background: transparent;
+  border: none;
+  resize: none;
+  color: #000000;
+  border-left: 1px solid black;
+  padding: 10px;
 }
 
 .past {
@@ -59,6 +68,7 @@ header {
   color: white;
 }
 
+/* Save Button */
 .saveBtn {
   border-left: 1px solid black;
   border-top-right-radius: 15px;
