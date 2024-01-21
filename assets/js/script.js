@@ -72,6 +72,7 @@ function drawTableOfTimeblocks() {
     
     var tableEl = $("<table>")                      // Table elemement - used to display the Work Day Scheduler
     .addClass("table table-hover table-bordered custom-table")
+    .css("background-color", "Cornsilk")
     .css("width","100%")
     .css("margin-top", "50px")
   
@@ -126,23 +127,22 @@ function drawTableOfTimeblocks() {
         // (a) timeblock name                           // Table Body Cell elements
         var tableBodyCellEl_Timeblock = $("<td>")       
         .addClass("p-2 text-center")
-        .text(formatTimeblock(selectedTimeblock))       // formatTimeblock converts 24 hour clock values to 12 hour display values
         .attr("scope", "row")
+        .text(formatTimeblock(selectedTimeblock))       // formatTimeblock converts 24 hour clock values to 12 hour display values
     
         // (b) event
         var tableBodyCellEl_Event = $("<td>")
         .addClass("p-2")
-        .css("background-color", selectEventBackgroundColour(selectedTimeblock))  // set event background according to the Timeblock time
-    
-        var inputEl = $("<textarea>")                   // use <textarea> for multi-line input
-        .attr("type", "string")
-        .css("background-color", selectEventBackgroundColour(selectedTimeblock))  // set event background according to the Timeblock time
+
+        var textAreaEl = $("<textarea>")                   // use <textarea> for multi-line input
+        .css("background-color", selectBackgroundColour(selectedTimeblock))  // set background according to the Timeblock time
         .css("height","50px")
         .css("width","100%")
         .text("Event " + i )
- 
-        var inputDivEl = $("<div>")                     // append input to div AND div to Cell 
-        inputDivEl.append(inputEl)
+
+        var inputDivEl = $("<div>")                     // append textarea to div AND div to Cell 
+
+        inputDivEl.append(textAreaEl)
         tableBodyCellEl_Event.append(inputDivEl)
 
 
@@ -232,11 +232,11 @@ function formatTimeblock(timeblock) {
 }
 
 
-// Selects an Event Background Colour according to its time of day
-function selectEventBackgroundColour(timeblock) {
+// Selects a Background Colour according to a timeblocks time of day
+function selectBackgroundColour(timeblock) {
 
     // Notes :
-    // this function selects a background colour for an Event according to its timeblock time in relation to the Current Hour
+    // this function selects a background colour for an element according to its timeblock time in relation to the Current Hour
     // a timeblock is a 24 hour clock value in hours (eg. 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, etc.)
 
     if (timeblock < currentHour_24format) {
