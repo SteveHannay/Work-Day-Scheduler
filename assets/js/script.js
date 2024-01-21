@@ -72,7 +72,8 @@ function drawTableOfTimeblocks() {
     
     var tableEl = $("<table>")                      // Table elemement - used to display the Work Day Scheduler
     .addClass("table table-hover table-bordered custom-table")
-
+    .css("width","100%")
+    .css("margin-top", "50px")
   
     // Create Table Headers
     // --------------------
@@ -85,16 +86,19 @@ function drawTableOfTimeblocks() {
     .addClass("p-2 text-center")
     .text("Time")
     .attr("scope", "col")
+    .css("width","10%")
 
     var tableHeaderCellEl_Event = $("<th>")
     .addClass("p-2")
     .text("Event")
     .attr("scope", "col")
+    .css("width","75%")
 
     var tableHeaderCellEl_Save = $("<th>")
     .addClass("p-2 text-center")
     .text("Save")
     .attr("scope", "col")
+    .css("width","10%")
 
     // - append Table Header Cells to Table Header Row
     tableHeaderRowEl.append(tableHeaderCellEl_Timeblock, tableHeaderCellEl_Event, tableHeaderCellEl_Save)
@@ -117,6 +121,7 @@ function drawTableOfTimeblocks() {
 
         // create elements
         var tableBodyRowEl = $("<tr>")                  // Table Body Row element
+         
 
         // (a) timeblock name                           // Table Body Cell elements
         var tableBodyCellEl_Timeblock = $("<td>")       
@@ -127,10 +132,21 @@ function drawTableOfTimeblocks() {
         // (b) event
         var tableBodyCellEl_Event = $("<td>")
         .addClass("p-2")
-        .text("Event " + i )
         .css("background-color", selectEventBackgroundColour(selectedTimeblock))  // set event background according to the Timeblock time
-        
     
+        var inputEl = $("<textarea>")                   // use <textarea> for multi-line input
+        .attr("type", "string")
+        .css("background-color", selectEventBackgroundColour(selectedTimeblock))  // set event background according to the Timeblock time
+        .css("height","50px")
+        .css("width","100%")
+        .text("Event " + i )
+ 
+        var inputDivEl = $("<div>")                     // append input to div AND div to Cell 
+        inputDivEl.append(inputEl)
+        tableBodyCellEl_Event.append(inputDivEl)
+
+
+
         // (c) save event utton
         var tableBodyCellEl_Save = $("<td>")
         .addClass("p-2 text-center save-event-btn")
@@ -195,7 +211,7 @@ function formatTimeblock(timeblock) {
 
     // Notes : 
     // this function formats a timeblock into a 12 hour display value (eg. "9 PM", "5 PM", etc.)
-    // a timeblock is a 24 hour clock value (eg. 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, etc.)
+    // a timeblock is a 24 hour clock value in hours (eg. 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, etc.)
 
     if (timeblock < 1) {
         // midnight
@@ -215,26 +231,25 @@ function formatTimeblock(timeblock) {
 
 }
 
+
 // Selects an Event Background Colour according to its time of day
 function selectEventBackgroundColour(timeblock) {
 
     // Notes :
-    // this function selects a background colour for Events according to the Timeblock time
-    // a timeblock is a 24 hour clock value (eg. 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, etc.)
-
-    console.log("timeblock = " + timeblock + " AND currentHour_24format = " + currentHour_24format)
+    // this function selects a background colour for an Event according to its timeblock time in relation to the Current Hour
+    // a timeblock is a 24 hour clock value in hours (eg. 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, etc.)
 
     if (timeblock < currentHour_24format) {
         // past timeblock
-        return "red"
+        return "LightGrey"
     }
     else if (timeblock === currentHour_24format) {
         // current timeblock
-        return "yellow"
+        return "LightPink"
     }
     else {
         // future timeblock
-        return "blue"
+        return "LightGreen"
     }
 
 } 
