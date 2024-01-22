@@ -21,7 +21,7 @@ var audioIncorrect = new Audio("./assets/sfx/incorrect.wav")
 
 
 // module variables
-var objEvents = {}               // object containing Events for the Timeblocks 
+var eventsArray = []               // array containing Event objects (Timeblock and Event Description) 
 var currentHour_24format = 0
 
 // constants 
@@ -55,6 +55,9 @@ function init(){
 
     // Display the current Date
     $("#currentDay").text(dayjs().format("dddd D MMMM YYYY"))
+
+    // Get the Array of Events stored in Local Storage
+    eventsArray = JSON.parse(localStorage.getItem('eventsArray')) || []
 
     // Draw a Table of Timeblocks
     drawTableOfTimeblocks()
@@ -99,7 +102,7 @@ function drawTableOfTimeblocks() {
 
     var tableHeaderCellEl_Save = $("<th>")
     .addClass("p-2 text-center")
-    .text("Changes")
+    .text("Save")
     .attr("scope", "col")
     .css("width","10%")
 
@@ -147,10 +150,11 @@ function drawTableOfTimeblocks() {
         .addClass("p-2 text-center")
  
         var saveEventButtonEl = $("<button>")
-        .addClass("p-2 text-center save-event-btn saveBtn")
+        .addClass("p-2 text-center save-event-btn saveBtn fa fa-save")
+        .css("width","100%")
         .attr("type", "button")
         .attr("data-timeblock", selectedTimeblock)      // store selectedTimeblock with delete event button
-        .text("Save")
+        //.text("Save")
  
         tableBodyCellEl_Save.append(saveEventButtonEl)
 
@@ -195,23 +199,39 @@ function saveEvent(timeblock) {
     // ---------------------------
 
     // - get the Event description related to the clicked "save" button (note : each Event description has the ID of the related timeblock)
-    eventDescriptions = document.getElementById(timeblock).value
+    eventDescription = document.getElementById(timeblock).value
 
     // Update the Array of Events
 
-    // - remove any existing Event description for this timeslot from the Array of Events
+    // - remove any existing Event for this timeslot from the Array of Events
+    for (i=0; i<eventsArray.length; i++){
+        if (eventsArray[i].Saved_timeblock == timeblock) {
+
+            console.log("Removing - Saved_timeblock : " + eventsArray[i].Saved_timeblock + ", Saved_eventDescription : " + eventsArray[i].Saved_eventDescription)
+            eventsArray = eventsArray.slice(0, i).concat(eventsArray.slice(i+1))  // remove an element from the array by index
+  
+        }
+    }
 
     // - add the selected Event to the Array of Events
+    
+    console.log("Adding - Saved_timeblock : " + timeblock + ", Saved_eventDescription : " + eventDescription)
+
+    var eventToSaveObject = { Saved_timeblock: timeblock, Saved_eventDescription: eventDescription } // create an object
+    
+
+    eventsArray.push(eventToSaveObject) // add the object to the array
+    console.log(eventsArray)
 
     // - save the Array of Events to Local Storage
+    localStorage.setItem("eventsArray", JSON.stringify(eventsArray))
 
-    
 
     // Repopulate the html Table with Events (refresh screen)
 
 
 
-    alert("Save EVENT Button click : timeblock = " + timeblock + ", eventDesciption = " + eventDescriptions)
+//    alert("Save EVENT Button click : timeblock = " + timeblock + ", eventDesciption = " + eventDescriptions)
 
 }
 
