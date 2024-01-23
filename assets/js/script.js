@@ -33,7 +33,7 @@ tableContainer.on('click', '.save-event-btn', function(event){
 
     // If a "Save Event" button has been clicked (a button with the class "save-event-button") Save the Event for the selected Timeblock
     var btnClicked = $(event.target)
-    var selectedTimeblock = btnClicked.attr("data-timeblock")   // get the timeblock Hour from the buttons "data-timeblock" attribute
+    var selectedTimeblock = btnClicked.attr("data-timeblock")   // get the timeblock Hour from the button's "data-timeblock" attribute
     saveEvent(selectedTimeblock)
  
 })
@@ -43,7 +43,7 @@ tableContainer.on('input', '.textarea', function(event){
 
     // If an "Event description" textarea has been edited, Highlight the "Save Event" Button for the selected Timeblock
     var textareaChanged = $(event.target)
-    var selectedTimeblock = textareaChanged.attr("id")          // get the timeblock Hour from the buttons "data-timeblock" attribute
+    var selectedTimeblock = textareaChanged.attr("id")          // get the timeblock Hour from the textarea's "data-timeblock" attribute
     highlightSaveButton(selectedTimeblock)
  
 })
@@ -73,15 +73,12 @@ function init(){
 }
 
 
-
-
-
-// Draw a Table of Timeblocks
+// Draw THE WORK DAY SCHEDULER - Table of Timeblocks
 function drawTableOfTimeblocks() {
 
-    // Clear any existing Table HTML elements
-    const existingTables = document.querySelectorAll('.table')
-    for (const el of existingTables) {el.parentNode.removeChild(el)}
+    // Creates a Table (in the "container" Div) and Populates it with Timeslots, Event descriptions and Save buttons
+
+    console.log("Creating Table of Timeblocks")
 
     // Create a new Table elemement - used to display the Work Day Scheduler
     var tableEl = $("<table>")                      
@@ -94,7 +91,7 @@ function drawTableOfTimeblocks() {
     // Create Table HEADER
     // -------------------
 
-    // create elements
+    // create header elements
     var tableHeadEl= $("<thead>")                   // Table Head element - header section of table
     var tableHeaderRowEl = $("<tr>")                // Table Head Row element
 
@@ -190,41 +187,59 @@ function saveEvent(timeblock) {
     // Save Event to Local Storage
     // ---------------------------
 
-    // - get the Event description related to the clicked "save" button (note : each Event description has the ID of the related timeblock)
-    eventDescription = document.getElementById(timeblock).value
+    // notes : 
+    // Saved Events are stored as Objects (Saved_timeblock + Saved_eventDescription) within an Array (eventsArray)
+    // The Events Array is also saved to and read-back from Local Storage (using the local storage variable "eventsArray")
+    
+    console.log("Saved button clicked for timeblock : " + timeblock)
 
-    // Update the Array of Events
+    // Get the Event description related to the clicked "save" button 
+    // note : an Event description element's ID = its related timeblock
+    eventDescription = document.getElementById(timeblock).value.trimEnd()
 
-    // - remove any existing Event for this timeslot from the Array of Events
+    // Update the Events Array
+
+    // - remove any existing Event descriptions for this timeslot (Hour)
     for (var i=0; i<eventsArray.length; i++){
 
         if (eventsArray[i].Saved_timeblock == timeblock) {
+
             // remove an element from the array by index
-            console.log("Removing - Saved_timeblock : " + eventsArray[i].Saved_timeblock + ", Saved_eventDescription : " + eventsArray[i].Saved_eventDescription)
+            console.log("Removing - Saved_timeblock : " + eventsArray[i].Saved_timeblock + ", Saved_eventDescription : '" + eventsArray[i].Saved_eventDescription + "'")
+            
             eventsArray = eventsArray.slice(0, i).concat(eventsArray.slice(i+1))  
         }
     }
 
-    // - add the selected Event to the Array of Events
-    //   create an Event object and add the Event object to the Array of Events
-    console.log("Adding - Saved_timeblock : " + timeblock + ", Saved_eventDescription : " + eventDescription)
+    // - add the selected Event to the Events Array
+    // note :  creates an Event Object and adds the Event Object to the Events Array
+    console.log("Adding - Saved_timeblock : " + timeblock + ", Saved_eventDescription : '" + eventDescription + "'")
+    
     var eventToSaveObject = { Saved_timeblock: timeblock, Saved_eventDescription: eventDescription } 
-    eventsArray.push(eventToSaveObject) // 
-    console.log(eventsArray)
+    eventsArray.push(eventToSaveObject) 
 
-    // Save the Array of Events to Local Storage
+
+    // Save the updated Events Array to Local Storage (using the local storage string variable "eventsArray")
     localStorage.setItem("eventsArray", JSON.stringify(eventsArray))
 
-    // RE-Populates the Events Array with data from Local Storage
+    // RE-Populates the Events Array with data returned from Local Storage
     getEventsFromLocalStorage()
 
-    // Refresh the Data (using data returned from Local Storage) for the "Event Desription" (whose data has been saved)
-    // note : only the data for a single textarea element is being refresh - not the whole table
+    console.log("Updated eventsArray - saved to and read-back from Local Storage : ")
+    console.log(eventsArray)
+
+    // Refresh Cell Data (using data returned from Local Storage to repopulate the "Event Desription" of the selected timeblock)
+    // notes : 
+    // only the data for a single textarea element is being refresh on the webpage - not the whole table
+    // this way the user can save events individually (a full table refresh would mean other timeslots unsaved changes would be lost)
+
     var textAreaEl = document.getElementById(timeblock)
     textAreaEl.value = getEventDescriptionFromTimeblock(timeblock)
 
-    // Unhighlight the Save Button
+    // Un-highlight the Save Button
     resetSaveButton(timeblock)
+
+    console.log("SAVE COMPLETE for timeblock : " + timeblock)
 
 }
 
@@ -238,14 +253,17 @@ function saveEvent(timeblock) {
 function getEventsFromLocalStorage() {
 
     // Populates the eventsArray with the content of the "eventsArray" (string) variable in Local Storage 
+    console.log("Reading saved Events from Local Storage")
+
     eventsArray = JSON.parse(localStorage.getItem('eventsArray')) || []
+
 }
 
 
-// Get the Event description (if any) for a timeblock Hour
+// Get the Event description (if any) for a timeblock (Hour)
 function getEventDescriptionFromTimeblock(timeblock) {
 
-    // Searches the Events Array (the array was populated from Local Storage)
+    // Searches the Events Array (the array was originally populated from Local Storage)
     var eventDescription = ""
 
     for (var i=0; i < eventsArray.length; i++){
@@ -284,14 +302,14 @@ function formatTimeblockHour(timeblock) {
 }
 
 
-// Selects a Background Colour according to a timeblocks time of day
+// Selects a Background Colour according to a timeblocks Hour
 function selectBackgroundColour(timeblock) {
 
     // Notes :
-    // this function selects a background colour for an element according to its timeblock time in relation to the Current Hour
+    // this function selects a background colour for an element according to its timeblock Hour in relation to the Current Hour
     // a timeblock is a 24 hour clock value in hours (eg. 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, etc.)
     
-    // this functions sets customised colours, but the CSS file could have been employed to set colours instead 
+    // this functions sets customised colours, but the CSS file could have been employed to set colours instead !!!!
 
     if (timeblock < currentHour_24format) {
         // past timeblock
@@ -309,24 +327,27 @@ function selectBackgroundColour(timeblock) {
 } 
 
 
-// Set Saved Button Background Colour 
-
+// Set "Save" Button Background Colour (highlight the button to show user that chnages to an event are not yet saved)
 function highlightSaveButton(timeblock) {
 
     // When an "Event description" textarea has been edited, Highlight the "Save Event" Button for the selected Timeblock
 
     var saveEventButtonEl = document.querySelector("[data-timeblock='" + timeblock + "']")
-    saveEventButtonEl.style.background = "Red"
+    saveEventButtonEl.style.background = "Red"                          // highlight button in red
+
     console.log("Save button highlighted for timeblock : " + timeblock)
 
 }
 
+
+// Reset "Save" Button Background Colour 
 function resetSaveButton(timeblock) {
 
-    // After a Save Button has been cllicked, Reset the Button for the selected Timeblock 
+    // After a Save Button has been clicked, Reset the Button for the selected Timeblock 
 
     var saveEventButtonEl = document.querySelector("[data-timeblock='" + timeblock + "']")
-    saveEventButtonEl.style.background = defaultButtonColour
+    saveEventButtonEl.style.background = defaultButtonColour            // reset to default colour
+
     console.log("Save button reset for timeblock : " + timeblock)
 
 }

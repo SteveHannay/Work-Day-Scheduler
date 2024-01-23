@@ -5,42 +5,44 @@ Challenge homework for 07-third-party-apis-module
 
 
 
-# Challenge 6 - JavascriptCodeQuiz
+# Challenge 6 - Work-Day-Scheduler
 
-Challenge project for 06-web-apis-module
+Challenge project for 07-third-party-apis-module
  
-Task - Create javascript code for a user Quiz on Javascript Code
+Task - Create javascript code for a "Work Day Scheduler" where the user can save Events for different Timeblocks (hours) 
 
 Developer - Steve Hannay
 
-Completed - 16th Jan 2024
+Completed - 23rd Jan 2024
 
 
 ## Description
 
-The aim of this project is to create a Quiz for the user to select from multiple choice answers to questions about Javascript.
+The aim of this project is to create a Work Day Scheduler for the user to type and save Events for different Timeblocks.
+
+Note : A Timeblock represents an Hour of the day (9, 10, 11, 12, 13, 14, etc.)
 
 The following acceptance criteria was set for the project :
 
 --------------------------------------------------------------------------------------------------------------------------
 
-    * Create a code quiz that contains the following requirements:
+    The app should:
 
-        * A start button that when clicked a timer starts and the first question appears.
+    * Display the current day at the top of the calender when a user opens the planner.
  
-        * Questions contain buttons for each answer.
-   
-        * When answer is clicked, the next question appears
-   
-    * If the answer clicked was incorrect then subtract time from the clock
+    * Present timeblocks for standard business hours when the user scrolls down.
+ 
+    * Color-code each timeblock based on past, present, and future when the timeblock is viewed.
+ 
+    * Allow a user to enter an event when they click a timeblock
 
-    * The quiz should end when all questions are answered or the timer reaches 0.
+    * Save the event in local storage when the save button is clicked in that timeblock.
 
-    * When the game ends, it should display their score and give the user the ability to save their initials and their score
+    * Persist events between refreshes of a page
   
 --------------------------------------------------------------------------------------------------------------------------
 
-During the process of working on this project I have learned more about the javascript coding, including the use of arrays of objects, timers, local storage, element creation, random numbers and event handling. 
+During the process of working on this project I have learned more about the javascript coding, including the use of arrays of objects, local storage, html tables, element creation and event handling. 
 
 Furthermore, I have become a little more familiar with working with GitHub and ReadMe files.
 
@@ -49,61 +51,51 @@ Furthermore, I have become a little more familiar with working with GitHub and R
 
 Open the following webpage from any internet browser.
 
-[Challenge 6 - link to Javascript Code Quiz deployed webpage](https://stevehannay.github.io/JavascriptCodeQuiz)
+[Challenge 7 - link to Work Day Scheduler webpage](https://stevehannay.github.io/Work-Day-Scheduler)
 
 No installation is necessary. 
 
 
 ## Usage
 
+When the webpage loads the Current Date will be displayed in the header section and a Table of Timeblocks will appear below.
+
+- Each Timeblock represents an Hour of the Day.
+
+- Each Timeblock has a section for entering an Event description and a Save button for saving changes.
+
+- Timeblocks are Colour Coded according to whether they are "Past", "Present" or "Future".
+
+- Save buttons for any unsaved changes will be Highlighted (with a Red background).
+
+- Clicking on a Save button saves changes to an Event to Local Storage (and resets the Save button).
+
+- The webpage retains its Saved Values (held in Local Storage) during a page refresh.
+
+
 Follow these instructions.
 
-Start :
+- Edit Event descriptions : Type within the Event description section of any Timeblock to add/edit/delete an event.
 
-- Click on the "Start Quiz" button to start a new game (see "Start Quiz" screenshot below).
-
-Questions :
-
-- A series of Questions about Javascript will be presented on screen (see "Question" screenshot below).
-
-- For each Question a set of buttons representing possible answers (multichoice) will appear.
-
-- Select the answers to each of the questions by clicking on the appropriate answer button.
-
-- A Time (coundown) will appear at the top-right of the screen. Once this reaches zero (or all questions have been answered) the game will end.
-
-- A penalty will be applied (currently set to 10 seconds) for every wrong answer that you select.
-
-Game Results :
-
-- At the end of the game the score will be presented on the Game Results screen (see "Game Result" screenshot below).
-
-- You can save your game's score to the High Scores List by entering your initials and clicking on the "Submit" button.
-
-High Scores :
-
-- The list of saved high scores is displayed on the High Scores screen (see "High Scores" screenshot below).
-
-- To permanently delete the list of saved high scores click on the "Clear High Scores" button.
-
-- To return to the "Start Quiz" screen to play another game, click on the "Go Back" button.
+- Save Events : Once changes to Event descriptions have been made, use the Save buttons to save changes.
 
 
+Here are screenshots of the Work Day Scheduler created for the project.
 
-Here are screenshots of the Javascript Code Quiz created for the project.
+- This is the Work Day Scheduler with no Unsaved Events.
+![Challenge 7 - screenshot of the Work Day Scheduler with no Unsaved Events](assets/images/no%20changes.png)
 
-- This is the "Start Quiz" screen for starting a new game.
-![Challenge 6 - screenshot of Start Quiz screen](assets/images/StartQuiz.png)
+- This is the Work Day Scheduler with 1 Unsaved Event.
+![Challenge 7 - screenshot of the Work Day Scheduler with 1 Unsaved Event](assets/images/change%201.png)
 
-- This is the "Question" screen where a question and multiple possible answers are presented to the user.
-![Challenge 6 - screenshot of the Question screen](assets/images//Question.png)
+- This is the Work Day Scheduler with 2 Unsaved Events.
+![Challenge 7 - screenshot of the Work Day Scheduler with 2 Unsaved Events](assets/images/change%202.png)
 
-- This is the "Game Results" screen which is presented to the user when the game ends and allows the user to save the games score.
-![Challenge 6 - screenshot of the Game Results screen](assets/images/GameResults.png)
+- This is the Work Day Scheduler with 1 Saved Event and data refresh.
+![Challenge 7 - screenshot of the Work Day Scheduler with 1 Saved Event](assets/images/save%201.png)
 
-- The is the "High Scores" screen which lists saved High Scores from All Games where the score was saved.
-![Challenge 6 - screenshot of the High Scores screen](assets/images//HighScores.png)
-
+- This is the Work Day Scheduler with 2 Saved Events and data refresh.
+![Challenge 7 - screenshot of the Work Day Scheduler with 2 Saved Events](assets/images/save%202%20and%20webpage%20refresh.png)
 
 
 ## Credits
@@ -114,15 +106,11 @@ During the project I studied and used extracts of various code supplied by the B
 
 The following information was referenced while coding the project.
 
-[w3 school - Javascript timing events](https://www.w3schools.com/js/js_timing.asp)
-
-[w3 resource - Javascript get random element from arrays](https://www.w3resource.com/javascript-exercises/javascript-array-exercise-35.php)
-
 [w3 school - Javascript event listeners](https://www.w3schools.com/js/js_htmldom_eventlistener.asp)
 
-The questions were based upon those found on the following website.
+[w3 school - JQuery](https://www.w3schools.com/jquery/default.asp)
 
-[w3 school - Javascript interview questions with answers](https://www.interviewbit.com/javascript-mcq/)
+
 
 
 ## License
