@@ -38,8 +38,8 @@ tableContainer.on('click', '.save-event-btn', function(event){
  
 })
 
-// - TextArea (containing "Event Description") value "change" event (due to user typing text)
-tableContainer.on('change', '.textarea', function(event){
+// - TextArea (containing "Event Description") "input" event (due to user typing text)
+tableContainer.on('input', '.textarea', function(event){
 
     // If an "Event description" textarea has been edited, Highlight the "Save Event" Button for the selected Timeblock
     var textareaChanged = $(event.target)
