@@ -1,11 +1,4 @@
-# Work-Day-Scheduler
-Challenge homework for 07-third-party-apis-module
-
-
-
-
-
-# Challenge 6 - Work-Day-Scheduler
+# Challenge 7 - Work-Day-Scheduler
 
 Challenge project for 07-third-party-apis-module
  
